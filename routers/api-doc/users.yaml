@@ -1,0 +1,110 @@
+paths:
+  /users:
+    get:
+      tags: 
+      - Users
+      summary: Used to get all uses
+      description: Used to get all uses
+      responses:
+        '200':
+          description: A successful response     
+#_____________________________________________________________________               
+  /users/{userId}:
+    delete:
+      tags: 
+      - Users
+      summary: Used to DELETE a user by id
+      description: Used to DELETE a user by id
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+          '200':
+            description: A successful response
+          '404':
+            description: The user was not found
+          '400':
+            description: Request error
+#_____________________________________________________________________            
+  /users/signup:
+    post:
+      tags: 
+      - Users
+      summary: Used to signup a new user
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          schema:
+            type: object
+            required:
+              - userName
+              - email
+            properties:
+              userName:
+                type: string
+              email:
+                type: string   
+      responses:
+        '200':
+          description: A successful response, with **otp** sent to the user email
+        '409':
+          description: User email already exist
+        '400':
+          description: Request error
+#_____________________________________________________________________   
+  /users/checkcode:
+    post:
+      tags: 
+      - Users
+      summary: Used to login a new user with the OTP and generate a JWT token
+      description: Used to login a new user with the OTP and generate a JWT token
+      parameters:
+        - in: body
+          name: login
+          schema:
+            type: object
+            required:
+              - email
+              - otp
+            properties:
+              email:
+                type: string
+              otp:
+                type: string   
+      responses:
+        '200':
+          description: A successful response, with the user JWT token
+        '400':
+          description: Request error
+#_____________________________________________________________________   
+  /users/editname/{userId}:
+    patch:
+      tags: 
+      - Users
+      summary: Usef to change a user name
+      parameters:
+        - in: path
+          name: userId
+          type: string
+          required: true
+        - in: body
+          name: newName
+          schema: 
+            type: object
+            required:
+              - newName
+            properties:
+              newName:
+                type: string
+      responses:
+        '200':
+          description: A successful response
+        '404':
+          description: The user was not found
+        '400':
+          description: Request error
