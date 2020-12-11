@@ -60,23 +60,23 @@ exports.registerToken = async (req, res) => {
   }
 }
 exports.verifyToken = async (req, res, next) => {
-  const { token } = req.cookies
-  if (!token) {
-    return res.sendStatus(403);
-  }
-  console.log(token)
+  const { authorization } = req.headers;
+  const token = authorization.split(" ")[1];
   try {
+    if (!token) {
+      res.status(401);
+      throw new Error('No token');
+    }
     const authData = await jwt.verify(token, 'MYSECRET');
     if (authData) {
       req.params.userId = authData.user
       return next();
     }
-    return res.sendStatus(403);
   } catch (error) {
-    if (error && error.name === 'TokenExpiredError') {
-      return res.sendStatus(403);
+    if(error && error.name === "TokenExpiredError"){
+      res.status(403);
     }
-    return res.sendStatus(400);
+    return next(error)
   }
 }
 exports.getUserById = async (req, res) => {
