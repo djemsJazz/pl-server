@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon -e yaml,js,json app.js"
+    "dev": "nodemon -e yaml,js,json app.js",
+    "lint": "eslint ."
   },
   "author": "DjemsD",
   "license": "ISC",
@@ -25,5 +26,16 @@
     "shortid": "^2.2.15",
     "swagger-jsdoc": "^4.0.0",
     "swagger-ui-express": "^4.1.4"
+  },
+  "devDependencies": {
+    "eslint": "^7.15.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "husky": "^4.3.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "yarn lint"
+    }
   }
 }
